@@ -1,0 +1,115 @@
+{% extends 'layouts/base.html' %} 
+
+{% load static %} 
+
+{% block title %}Consultar Ticket{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+    <!-- estilo css -->
+    <link rel="stylesheet" href="{% static '/css/lista_consultar_ticket.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="{% static '/js/eliminar_ticket.js' %}"></script>
+    <script src="{% static '/js/lista_consultar_ticket.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+
+<main class="">
+    <section class="card card-body" style="background-color: #e7eaf0;">
+        <div class=" mt-5" >
+            <div class="row" >
+                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" >
+                    <h1 class="text-center mt-2"><i class="fas fa-user-edit" style="margin-right: 7px; color:#48e"></i>Consultar Tickets</h1>
+                    <div class="table table-responsive card card-body">
+
+                        <table class="table table-striped table-hover table-bordered" id="datatable-consultar" data-user-id="{{ usuario_logueado_id }}">
+                            <caption>
+                                Listado de Tickets
+                            </caption>
+                            <thead style="color: white; background-color:#48e;">
+                                <tr>
+                                    <th class="centered">#</th>
+                                    <th class="centered">Ticket id</th>
+                                    <th class="centered">Fecha</th>
+                                    <th class="centered">Usuario</th>
+                                    <th class="centered">Asunto</th>
+                                    <th class="centered">Departamento</th>
+                                    <th class="centered">Descripcion</th>
+                                    <th class="centered">Email</th>
+                                    <th class="centered">Opciones</th>
+                                </tr>
+                            </thead>
+                            {% if user.is_superuser or user.is_staff %}
+                                <tbody id="tableBody_consultar_tickets">
+                                    {% for ticket in todos_los_tickets %}
+                                        <tr>
+                                            <th scope="row" class="centered">{{ forloop.counter }}</th>
+                                            <td class="centered">{{ticket.id}}</td>
+                                            <td class="centered">{{ticket.fecha_creacion|date:'d-m-Y H:i'}}</td>
+                                            <td class="centered">{{ticket.usuario_id}} - {{ticket.usuario.username}} </td>
+                                                
+                                            <td class="centered">{{ticket.asunto}}</td>
+                                            <td class="centered">{{ticket.departamento}}</td>
+                                            <td class="centered">{{ticket.descripcion}}</td>
+                                            <td class="centered">{{ticket.email}}</td>
+                                            <td class="centered">
+                                                <a href="#" class="btn btn-sm btn-info disabled"><i class="fas fa-ban"></i></a>
+                                                
+                                                <a href="#" onclick="eliminar_ticket({{ ticket.id }})" class='btn btn-sm btn-danger'><i class='fa fa-solid fa-trash'></i></a>
+                                                
+                                                <a href="{% url 'comentar_ticket' id=ticket.id %}" class='btn btn-sm btn-primary'><i class='fa fa-solid fa-comment'></i> Comentar</a>
+                                            </td>
+                                        </tr>
+                                    {% empty %}
+                                        <h3 class="text-center" style="color:#48e;">
+                                            <i class="fa fa-solid fa-clipboard-list" style="color:#48e"></i> Todavía no se han creado tickets.
+                                        </h3>
+                                    {% endfor %}
+                                </tbody>
+                            {% else %}
+                                <tbody >
+                                    {% for ticket in tickets_usuario_especifico %}
+                                        <tr>
+                                            <th scope="row" class="centered">{{ forloop.counter }}</th>
+                                            <th class="centered">{{ ticket.id }}</th>
+                                            <td class="centered">{{ ticket.fecha_creacion|date:'d-m-Y H:i' }}</td>
+                                            <td class="centered">{{ ticket.usuario.username }}</td>
+                                            <td class="centered">{{ ticket.asunto }}</td>
+                                            <td class="centered">{{ ticket.departamento }}</td>
+                                            <td class="centered">{{ ticket.descripcion }}</td>
+                                            <td class="centered">{{ ticket.email }}</td>
+                                            <td class="centered">
+                                                {% if ticket.asignado_a is empty %}
+                                                    <a href="{% url 'editar_ticket' id=ticket.id %}" class="btn btn-sm btn-info"><i class='fa fa-solid fa-pencil'></i></a>                   
+                                                    <a href="#" onclick="eliminar_ticket({{ ticket.id }})" class='btn btn-sm btn-danger'><i class='fa fa-solid fa-trash'></i></a>
+                                                    <a href="#" class='btn btn-sm btn-primary disabled'><i class="fas fa-ban"></i> Comentar</a>
+                                                    
+                                                {% else %}
+                                                    <a href="#" class="btn btn-sm btn-info disabled"><i class="fas fa-ban"></i></a>                   
+                                                    <a href="#" class='btn btn-sm btn-danger disabled'><i class="fas fa-ban"></i></a>
+                                                    <a href="{% url 'comentar_ticket' id=ticket.id %}" class='btn btn-sm btn-primary'><i class='fa fa-solid fa-comment'></i> Comentar</a>
+                                                    
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% empty %}
+                                        <h3 class="text-center" style="color:#48e;">
+                                            <i class="fa fa-solid fa-clipboard-list" style="color:#48e"></i> Todavía no se han creado tickets.
+                                        </h3>
+                                    {% endfor %}    
+                                </tbody>
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock %}

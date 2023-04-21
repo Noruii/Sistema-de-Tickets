@@ -1,0 +1,55 @@
+{% extends 'layouts/base.html' %}
+
+{% load static %} 
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static '/css/cuenta_usuario.css' %}" />
+
+    <title>Mi tickets</title>
+</head>
+
+<body>
+
+    <main class="main_container">
+
+
+        <header class="container__logo__ticket">
+            <img src="../static/img/techny-ticket.png" alt="tickets">
+        </header>
+
+        <article class="container__options__user">
+
+            <section class="container__options__user__crearTicket">
+                <img src="../static/img/ticket2.png" alt="ticket">
+                <h3 id="container__options__user__crearTicket__title">Crear un ticket nuevo</h3>
+                <p>Por favor de ingresar todos los datos detalladamente para poder darle una mejor opcion a su problema.
+                </p>
+                <a href="{% url 'crear_ticket' %}">Crear Ticket</a>
+            </section>
+
+            <section class="container__options__user__consultarTicket">
+                <img src="../static/img/ticket3.png" alt="ticket">
+                <h3 id="container__options__user__consultarticket__title">Consultar Tickets</h3>
+                <form action="" method="post">
+                    <label>Email: <br><input type="email" placeholder="Email" name="consultar_ticket"></label>
+                    <label>Ticket ID: <br><input type="text" placeholder="Ticket ID" name="consultar_id_ticket"></label>
+                    <input type="submit" value="Consultar Ticket" id="btn_consultar_submit">
+                </form>
+
+            </section>
+
+        </article>
+
+    </main>
+</body>
+
+</html>
+
+{% endblock %}

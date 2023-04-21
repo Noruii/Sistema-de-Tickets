@@ -1,0 +1,59 @@
+{% extends 'layouts/base.html' %} 
+
+{% load static %} 
+
+{% block title %} Crear Ticket {% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+
+<!-- <main class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 mt-5 mb-3"> -->
+<main class="" style="background-color: #e7eaf0;">
+    <div class="row">
+        <div class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4 mt-5 mb-3">
+            <h1 class="text-center mt-4"><i class="fas fa-clipboard-list" style="margin-right: 7px; color:#48e"></i>Crear Ticket</h1>
+            <form method="POST" class="card card-body">
+                {% csrf_token %}
+
+                <!-- Mensajes -->
+                {% if messages %}
+                    {% for msg in messages %}
+                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                            <strong>{{ msg }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="form-group">
+                    <label>Asunto:</label>
+                    <input type="text" name="txtAsunto" id="id_txtAsunto" class="form-control" placeholder="Describir el asunto" >
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormDepartamento">Departamento:</label>
+                    <select class="form-control" name="formControlDepartamento" id="id_formControlDepartamento" >
+                        {% for i, j in departamentos %}
+                            <option>{{ j }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlDescripcion">Detalles de la problematica:</label>
+                    <textarea class="form-control" name="formControlDescripcion" id="id_formControlTextarea1" rows="4" ></textarea>
+                </div>
+                <div class="form-group mt-3 d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                    <a class="btn btn-danger" href="{% url 'principal_miticket' %}" role="button">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

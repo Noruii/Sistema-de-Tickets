@@ -1,0 +1,109 @@
+{% extends 'layouts/base.html' %} 
+
+{% load static %} 
+
+{% block title %} Reportes {% endblock %}
+
+{% block styles %}
+    <!-- datatable responsive -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+    <!-- Date Range Picker -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <!-- estilo css -->
+    <link rel="stylesheet" href="{% static '/css/lista_panel.css' %}" />
+{% endblock %}
+
+{% block scripts %}
+    <!-- datatable responsive -->
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+
+    <!-- datatable botones (PDF, EXCEL) -->
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+
+    <!-- Date Range Picker -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <!-- scripts js -->
+    <script src="{% static '/js/lista_generar_reportes.js' %}"></script>
+    <script src="{% static '/js/date_picker_reportes.js' %}"></script>
+    <script src="{% static '/js/eliminar_ticket.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<main class="">
+    <section class="card card-body" style="background-color: #e7eaf0;">
+        <div class=" mt-5" >
+            <div class="row" >
+                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" >
+                    <h1 class="text-center mt-2"><i class="fas fa-chart-line" style="margin-right: 7px; color:#48e"></i> Generar Reportes</h1>
+                    <div class="table table-responsive card card-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <label><i class="fa fa-solid fa-bars" style="margin-right: 7px;"></i> Rango de fechas:</label>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <input type="text" class="col-sm-8 col-md-8 col-lg-4 col-xl-2" name="dates">
+                                        <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-solid fa-filter"></i> Filtrar Reportes</button>
+                                        <a href="{% url 'generar_reportes' %}" class='btn btn-sm btn-success' style="margin-left: 7px;" ><i class="fas fa-sync-alt"></i> Refrescar</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <table id="datatable-generar-reportes" class="table table-striped table-hover table-bordered">
+                            
+                            <thead style="color: white; background-color:#48e;">
+                                <tr>
+                                    <th class="centered">#</th>
+                                    <th class="centered">Ticket id</th>
+                                    <th class="centered">id - Nombre de usuario</th>
+                                    <th class="centered">Fecha</th>
+                                    <th class="centered">Estado</th>
+                                    <th class="centered">Prioridad</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody_panel_tickets">
+                                {% for ticket in tickets %}
+                                        <tr>
+                                            <th scope="row" class="centered">{{ forloop.counter }}</th>
+                                            <td class="centered">{{ticket.id}}</td>
+                                            <td class="centered">{{ticket.usuario_id}} - {{ticket.usuario.username}} </td>
+                                            <td class="centered">{{ticket.fecha_creacion|date:'d-m-Y H:i'}}</td>
+                                            <!-- Pasar estado y prioridad -->
+                                            <!-- Acceder al primer estado y prioridad de cada ticket usando la sintaxis de objeto de relación inversa,
+                                            La función first devuelve el primer objeto relacionado en la lista de objetos de relación, lo que corresponde al estado y prioridad más recientes para cada ticket. -->
+                                            {% if ticket.estados.first.estado == 'Abierto' %}
+                                                <td class="centered text-success"><b>{{ ticket.estados.first.estado }}</b></td>
+                                            {% elif ticket.estados.first.estado == 'En progreso' %}
+                                                <td class="centered text-warning"><b>{{ ticket.estados.first.estado }}</b></td>
+                                            {% elif ticket.estados.first.estado == 'Cerrado' %}
+                                                <td class="centered text-danger"><b>{{ ticket.estados.first.estado }}</b></td>
+                                            {% endif %}
+
+                                            {% if ticket.prioridades.first.prioridad  == 'Baja' %}
+                                                <td class="centered text-info"><b>{{ ticket.prioridades.first.prioridad }}</b></td>
+                                            {% elif ticket.prioridades.first.prioridad  == 'Normal' %}
+                                                <td class="centered text-warning"><b>{{ ticket.prioridades.first.prioridad }}</b></td>
+                                            {% elif ticket.prioridades.first.prioridad  == 'Alta' %}
+                                                <td class="centered text-danger"><b>{{ ticket.prioridades.first.prioridad }}</b></td>
+                                            {% endif %}
+                                        </tr>
+                                {% empty %}
+                                    <h3 class="text-center" style="color:#48e;">
+                                        <i class="fa fa-solid fa-clipboard-list" style="color:#48e"></i> No se han creado tickets en esas fechas.
+                                    </h3>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

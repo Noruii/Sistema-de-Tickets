@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--css-->
+    <link rel="stylesheet" href="{% static '/css/cambio_clave.css' %}" />
+    <title>Cambiar tu contraseña</title>
+</head>
+
+<body>
+
+    <div class="header__clave">
+        <h1>Cambiar tu contraseña</h1>
+        <p>Introduce una nueva contraseña, recomendamos crear una contraseña unica y que no se te olvide, tambien de no utilizar contraseñas que estes utilizando en otros sitios web.</p>
+    </div>
+    <main class="container__boxclave">
+        <div class="container__boxclave__info">
+            <img src="../static/img/password.png" alt="Contraseña">
+        </div>
+
+        <!-- {% csrf_token %} -->
+        <form class="container__boxclave__form" method="post" action="">
+            <label>Nombre de usuario:<br><input type="text"></label>
+            <label>Correo:<br><input type="email"></label>
+            <label>Contraseña actual:<br><input type="password"></label>
+            <label>Contraseña nueva:<br><input type="password"></label>
+            <label>Confirmar la nueva contraseña:<br><input type="password"></label>
+            <div class="container__boxclave__btns">
+                <a href="{% url 'iniciar_sesion' %}"><input type="button" value="Cancelar"></a>
+                <input type="submit" value="Cambiar contraseña">
+            </div>
+        </form>
+    </main>
+
+    <script>
+        const formulario = document.querySelector('.container__boxclave__form');
+        const inputs = document.querySelectorAll('.container__boxclave__form label input');
+
+        formulario.addEventListener('submit', (e) => {
+            e.preventDefault();
+            inputs.forEach(inp => {
+                if (inp.value == '') {
+                    inp.style.boxShadow = "0px 2px 2px 3px #c85935";
+                } else {
+                    inp.style.boxShadow = '0px 2px 2px 3px rgb(15, 197, 45)';
+                }
+            })
+        })
+    </script>
+
+</body>
+</html>

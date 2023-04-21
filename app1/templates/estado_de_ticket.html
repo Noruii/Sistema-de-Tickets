@@ -1,0 +1,70 @@
+{% extends 'layouts/base.html' %} 
+
+{% load static %} 
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- estilo css -->
+    <link rel="stylesheet" href="{% static '/css/estado_de_ticket.css' %}" />
+    <!-- iconos -->
+    <script src="https://kit.fontawesome.com/9a3237697e.js" crossorigin="anonymous"></script>
+
+    <title>Mi tickets</title>
+</head>
+
+<body>
+
+    <main class="container__estadoTicket">
+
+        <article class="container__estadoTicket__title">
+            <div class="container__estadoTicket__logo"><i class="fa solid fa-ticket img_ticket"></i></div>
+            <div class="titles">
+                <h1>Reporte de estado de ticket</h1>
+                <p>
+                    Si el ticket que has solicitado aun no ha sido respondido, espere pacientemente, estamos trabajando para poder darle la solucion más optima.
+                </p>
+            </div>
+        </article>
+
+        <div class="container__ticket__user">
+            <div class="container__ticket__user__title">
+                <i style="font-size: 30px; color: white;" class="fa solid fa-ticket tickets-logo"></i>
+                <p>Ticket_ID</p>
+            </div>
+
+            <div class="container__ticket__user__info">
+                <div class="container__ticket__img">
+                    <i class="fa solid fa-toolbox"></i>
+                </div>
+
+                <div class="container__ticket__info1">
+                    <p><span>Fecha:</span> 16/3/2023</p>
+                    <p><span>Nombre:</span> User_nombre</p>
+                    <p><span>Correo:</span>user_correo</p>
+                    <p><span>Departamento:</span>Ticket_Department</p>
+                    <p><span>Problema:</span>ticket_titulo</p>
+                    <p><span>Estado:</span>Estado_ticket</p>
+                </div>
+
+                <div class="container__ticket_solucion">
+                    <span>Solución: </span><br>
+                    <textarea name="solucion_ticket" readonly></textarea>
+                </div>
+            </div>
+
+        </div>
+        <a href="{% url 'cuenta_usuario' %}" class="btn__volver">Volver</a>
+
+    </main>
+
+</body>
+
+</html>
+
+{% endblock %}

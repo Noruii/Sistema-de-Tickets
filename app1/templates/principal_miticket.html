@@ -1,0 +1,70 @@
+{% extends 'layouts/base.html' %} 
+
+{% load static %} 
+
+{% block title %} Administrador My ticket {% endblock %}
+
+{% block styles %}
+    <!-- estilo css -->
+    <link rel="stylesheet" href="{% static '/css/principal_miticket.css' %}">
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+
+    <main class="main_container ">
+        <div>
+            <div class="main_container_logo"><i class="fa solid fa-ticket"></i></div>
+
+            {% if user.is_superuser or user.is_staff %}
+                <div class="main_container_options">
+                    <div class="options_nuevo">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3 id="options_title">Crear un ticket nuevo</h3>
+                        <p>Por favor de ingresar todos los datos detalladamente para poder darle una mejor opcion a su problema.</p>
+                        <a href="{% url 'crear_ticket' %}" id="btn_nuevo_ticket" class="btn">Crear ticket</a>
+                    </div>
+                    <div class="options_comprobar">
+                        <i class="fas fa-user-edit"></i>
+                        <h3 id="options_title">Consultar tickets</h3>
+                        <p>Acceda a los tickets creados para ver las solicitudes actuales y realizar respuestas.</p>
+                        <a href="{% url 'consultar_ticket' %}" id="btn_comprobar_tickets" class="btn">Consultar Ticket</a>
+                    </div>
+
+                    <div class="options_dashboard">
+                        <i class="fas fa-chart-line"></i>
+                        <h3 id="options_title">Generar Reportes</h3>
+                        <p>Aqui se podran hacer reportes de los tickets, filtrar por fechas para imprimir y guardar en PDF o EXCEL, etc.</p>
+                        <a href="{% url 'generar_reportes' %}" id="btn_mostrar_panel" class="btn">Mostrar panel</a>
+                    </div>
+
+                    <div class="options_dashboard">
+                        <i class="fas fa-users"></i>
+                        <h3 id="options_title">Gestion Usuarios</h3>
+                        <p>Lista de usuarios registrados en el sistema, gestionar datos, agregar, editar o eliminar según sea necesario.</p>
+                        <a href="{% url 'consultar_usuarios' %}" id="btn_mostrar_panel" class="btn">Gestionar Usuarios</a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="main_container_options">
+                    <div class="options_nuevo">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3 id="options_title">Crear un ticket nuevo</h3>
+                        <p>Por favor de ingresar todos los datos detalladamente para poder darle una mejor opcion a su problema.</p>
+                        <a href="{% url 'crear_ticket' %}" id="btn_nuevo_ticket" class="btn">Crear ticket</a>
+                    </div>
+                    <div class="options_comprobar">
+                        <i class="fas fa-user-edit"></i>
+                        <h3 id="options_title">Consultar tickets</h3>
+                        <p>Acceda a sus tickets creados para que vea sus solicitudes actuales y respuestas.</p>
+                        <a href="{% url 'consultar_ticket' %}" id="btn_comprobar_tickets" class="btn">Consultar Ticket</a>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+    </main>
+
+{% endblock %}

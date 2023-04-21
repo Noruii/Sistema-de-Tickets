@@ -1,0 +1,157 @@
+{% extends 'layouts/base.html' %} 
+
+{% load static %} 
+
+{% block title %} Comentar Ticket {% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+
+<main class="" style="background-color: #e7eaf0;">
+    <div class="container mt-5" >
+        <div class="row justify-content-center" >
+            <h1 class="text-center mt-4"><i class="fa fa-solid fa-comment" style="margin-right: 7px; color:#48e"></i>Ticket: #{{ ticket.id }}</h1>
+            <div class="col-md-8 " >
+                <div class="card">
+                    <div class="card-header"><b>Asunto: </b>{{ ticket.asunto }}</div>
+                    <div class="card-body">
+                        <b>Descripcion: </b>
+                        <section class="card card-body">
+                            {{ ticket.descripcion }}
+                        </section>
+                        <p class="card-text mt-3"><b>Departamento: </b>{{ ticket.departamento }}</p>
+                        <p class="card-text"><small class="text-muted">Ticket creado por <b>{{ ticket.usuario.username }}</b> el {{ ticket.fecha_creacion|date:'d-m-Y H:i' }}</small></p>
+
+                        <div class="form-inline">
+                            <div class="form-group mr-3">
+                                <label for="estado" style="margin-right: 7px;"><b>Estado:</b></label>
+                                {% if estado_actual.estado == 'Abierto' %}
+                                    <h1 class="text-success" style="font-size: 20px; margin-top: 5px;"></b>{{ estado_actual.estado }}</b></h1>
+                                {% elif estado_actual.estado == 'En progreso' %}
+                                    <h1 class="text-warning" style="font-size: 20px; margin-top: 5px;"></b>{{ estado_actual.estado }}</b></h1>
+                                {% elif estado_actual.estado == 'Cerrado' %}
+                                    <h1 class="text-danger" style="font-size: 20px; margin-top: 5px;"></b>{{ estado_actual.estado }}</b></h1>
+                                {% endif %}
+                            </div>
+                            <div class="form-group mr-3">
+                                <label for="prioridad" style="margin-right: 7px;"><b>Prioridad:</b></label>
+                                {% if prioridad_actual.prioridad  == 'Baja' %}
+                                    <h1 class="text-info" style="font-size: 20px; margin-top: 5px;"></b>{{ prioridad_actual.prioridad }}</b></h1>
+                                {% elif prioridad_actual.prioridad == 'Normal' %}
+                                <h1 class="text-warning" style="font-size: 20px; margin-top: 5px;"></b>{{ prioridad_actual.prioridad }}</b></h1>
+                                {% elif prioridad_actual.prioridad == 'Alta' %}
+                                <h1 class="text-danger" style="font-size: 20px; margin-top: 5px;"></b>{{ prioridad_actual.prioridad }}</b></h1>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {% if user.is_superuser or user.is_staff %}
+                            <form method="post" action="{% url 'estado_prioridad_update' id=ticket.id %}" class="form-inline card-header">
+                                {% csrf_token %}
+                                <div class="form-group mr-3">
+                                    <label for="estado" style="margin-right: 7px;">Estado:</label>
+                                    <select class="form-control" id="estado" name="estado">
+                                        {% for i, j in estados %}
+                                            {% if i == 'Abierto' %}
+                                                <option class="text-success" value="{{ i }}">{{ i }}</option>
+                                            {% elif i == 'En progreso' %}
+                                                <option class=" text-warning" value="{{ i }}">{{ i }}</option>
+                                            {% elif i == 'Cerrado' %}
+                                                <option class=" text-danger" value="{{ i }}">{{ i }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group mr-3">
+                                    <label for="prioridad" style="margin-right: 7px;">Prioridad:</label>
+                                    <select class="form-control" id="prioridad" name="prioridad">
+                                        {% for i, j in prioridades %}
+                                            {% if i == 'Baja' %}
+                                                <option class="text-info" value="{{ i }}">{{ i }}</option>
+                                            {% elif i == 'Normal' %}
+                                                <option class=" text-warning" value="{{ i }}">{{ i }}</option>
+                                            {% elif i == 'Alta' %}
+                                                <option class=" text-danger" value="{{ i }}">{{ i }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Cambiar Estado y Prioridad</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card my-3">
+                    <div class="card-header"><i class="fa fa-regular fa-comment" style="margin-right: 7px;"></i> Comentarios</div>
+                    <ul class="list-group list-group-flush">
+                        {% for comentario in comentarios %}
+                            <style>
+                                li.admin {
+                                    background-color: #f7f7f7;
+                                }
+                                b.admin {
+                                    color: green;
+                                }
+                                i.admin {
+                                    color: green;
+                                }
+                                li.usuario_normal {
+                                    background-color: white;
+                                }
+                                b.usuario_normal {
+                                    color: #48e;
+                                }
+                                i.usuario_normal {
+                                    color: #48e;
+                                }                                
+                            </style>
+                            <li class="list-group-item {% if comentario.usuario.is_superuser or comentario.usuario.is_staff %}admin{% else %} usuario_normal {% endif %}">
+                                <div>
+                                    <i class="fa solid fa-user {% if comentario.usuario.is_superuser or comentario.usuario.is_staff %}admin{% else %} usuario_normal {% endif %}" style="margin-right: 7px;"></i>
+
+                                    <b class="{% if comentario.usuario.is_superuser or comentario.usuario.is_staff %}admin{% else %} usuario_normal {% endif %}">{{ comentario.usuario.first_name }} {{ comentario.usuario.last_name }}</b> · 
+
+                                    <small class="text-muted">{{ comentario.fecha_creado|date:'d-m-Y H:i' }}</small> 
+                                </div>
+                                
+                                <div style="margin-left: 5%;">{{ comentario.comentario }}</div>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item">Aún no hay comentarios.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="card my-3">
+                    <div class="card-header">Añadir un comentario</div>
+                    <div class="card-body">
+                        <form method="post" action="{% url 'comentar_ticket' id=ticket.id %}">
+                            {% csrf_token %}
+
+                            <!-- Mensajes -->
+                            <!-- {% if messages %}
+                                {% for msg in messages %}
+                                    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                                        <strong>{{ msg }}</strong>
+                                    </div>
+                                {% endfor %}
+                            {% endif %} -->
+
+                            <div class="form-group">
+                                <label for="texto">Comentario:</label>
+                                <textarea class="form-control" id="textAreacomentario" name="textAreacomentario" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg" style="margin-right: 2%;">Comentar</button>
+                            <a class="btn btn-danger btn-lg" href="{% url 'consultar_ticket' %}" role="button">Cancelar</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

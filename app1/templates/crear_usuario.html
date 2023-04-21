@@ -1,0 +1,137 @@
+{% extends 'layouts/base.html' %} 
+
+{% load static %} 
+
+{% block title %} Crear Ticket {% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+
+<main class="" style="background-color: #e7eaf0;">
+    <div class="row">
+        <div class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4 mt-5 mb-3">
+        <h1 class="text-center mt-4"><i class="fas fa-user" style="color: #48e;"></i> Crear Usuario</h1>
+        <form method="POST" class="card card-body">
+            {% csrf_token %}
+
+            <!-- Mensajes -->
+            {% if messages %}
+                {% for msg in messages %}
+                    {% if msg.tags == 'success' %}
+                        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                            <strong>{{ msg }}</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% elif msg.tags == 'error' %}
+                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                            <strong>{{ msg }}</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            <div class="form-group">
+                <label for="username">Nombre de usuario: </label>
+                <input type="text" name="username"  id="username" class="form-control"
+                placeholder="">
+            </div>
+            <div class="form-group">
+                <label for="first_name">Nombre: </label>
+                <input type="text" name="first_name"  id="first_name" class="form-control"
+                placeholder="">
+            </div>
+            <div class="form-group">
+                <label for="last_name">Apellido: </label>
+                <input type="text" name="last_name"  id="last_name" class="form-control"
+                placeholder="">
+            </div>
+            <div class="form-group">
+                <label for="email">Correo electrónico: </label>
+                <input type="email" name="email"  id="email" class="form-control"
+                placeholder="">
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña: </label>
+                <input type="password" name="password1"  id="password1" class="form-control"
+                placeholder="">
+            </div>
+            <ul class="" style="font-size: 15px; text-align: justify;">
+                <li>La contraseña debe tener al menos 8 caracteres.</li>
+                <li>La contraseña debe contener al menos un número.</li>
+                <li>La contraseña debe contener al menos una letra mayúscula y una minúscula.</li>
+                <li>La contraseña debe contener al menos uno de los siguientes caracteres especiales: $ # @.</li>
+            </ul>
+            <div class="form-group">
+                <label for="password">Confirmar Contraseña: </label>
+                <input type="password" name="password2"  id="password2" class="form-control"
+                placeholder="">
+            </div>
+            <label for="roles">Seleccionar el rol del usuario: </label>
+            <section class="card card-body">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioRol" id="flexRadioBasico" value="Basico" checked>
+                    <label class="form-check-label text-info" data-toggle="tooltip" data-placement="top" title="Usuario basico del sistema de tickets." for="flexRadioDefault1">
+                        Basico
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioRol" id="flexRadioStaff" value="Staff">
+                    <label class="form-check-label text-success" data-toggle="tooltip" data-placement="top" title="Administrador normal." for="flexRadioDefault2">
+                        Administrador
+                    </label>
+                </div>
+                {% if user.is_superuser %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioRol" id="flexRadioSuperUser" value="SuperUser">
+                        <label class="form-check-label text-warning" data-toggle="tooltip" data-placement="top" title="El Super Administrador tiene todos los privilegios así como acceso al panel de Django." for="flexRadioDefault3">
+                            Super Administrador
+                        </label>
+                    </div>
+                {% endif %}
+            </section>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header card-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Escriba su contraseña para confirmar.</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="password">Contraseña: </label>
+                                <input type="password" name="passwordModal" required id="passwordModal" class="form-control"
+                                placeholder="">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mt-3 d-grid gap-2">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Crear usuario</button>
+                <a class="btn btn-danger" href="{% url 'consultar_usuarios' %}" role="button">Cancelar</a>
+            </div>
+        </form>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

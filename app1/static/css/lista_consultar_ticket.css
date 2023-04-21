@@ -1,0 +1,22 @@
+/* .table-resizable th, .table-resizable td {
+    resize: horizontal;
+} */
+/* .table-resizable th, .table-resizable td {
+    cursor: ew-resize;
+} */
+
+/* #table-resizable {
+    resize: horizontal;
+} */
+
+.centered {
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+th, td {
+    max-width: 150px;
+    overflow: hidden;
+    /* text-overflow: ellipsis; */
+    white-space: nowrap;
+}

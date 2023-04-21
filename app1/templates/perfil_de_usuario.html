@@ -1,0 +1,155 @@
+{% extends 'layouts/base.html' %} 
+
+{% load static %} 
+
+{% block title %} Perfil de Usuario {% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+
+<main class="" style="background-color: #e7eaf0;">
+    <div class="row">
+        <div class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4 mt-5 mb-3">
+            <h1 class="text-center mt-4"><i class="fas fa-user" style="color: #48e;"></i> Perfil de Usuario</h1>
+            <div class="card card-body">
+
+                <!-- Mensajes -->
+                {% if messages %}
+                    {% for msg in messages %}
+                        {% if msg.tags == 'success' %}
+                            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                                <strong>{{ msg }}</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% elif msg.tags == 'error' %}
+                            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                                <strong>{{ msg }}</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                <div class="form-group">
+                    <p class="card-text text-center"><b>Nombre de usuario: </b>{{ usuario.username }}</p>
+                </div>
+                <div class="form-group">
+                    <p class="card-text text-center"><b>Nombre: </b>{{ usuario.first_name }}</p>
+                </div>
+                <div class="form-group">
+                    <p class="card-text text-center"><b>Apellido: </b>{{ usuario.last_name }}</p>
+                </div>
+                <div class="form-group">
+                    <p class="card-text text-center"><b>Correo electrónico: </b>{{ usuario.email }}</p>
+                </div>
+
+                <!-- Modal editar perfil -->
+                <div class="modal fade" id="modalEditarPerfil" tabindex="-1" role="dialog" aria-labelledby="modalEditarPerfilLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header card-header">
+                                <h5 class="modal-title" id="modalEditarPerfilLabel">Editar perfil</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="username">Nombre de usuario: </label>
+                                        <input type="text" name="username" required id="username" value="{{ usuario.username }}" class="form-control"
+                                        placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="first_name">Nombre: </label>
+                                        <input type="text" name="first_name" required id="first_name" value="{{ usuario.first_name }}" class="form-control"
+                                        placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="last_name">Apellido: </label>
+                                        <input type="text" name="last_name" required id="last_name" value="{{ usuario.last_name }}" class="form-control"
+                                        placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Correo electrónico: </label>
+                                        <input type="email" name="email" required id="email" value="{{ usuario.email }}" class="form-control"
+                                        placeholder="">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <!-- data-dismiss="modal" -->
+                                    <a href="{% url 'perfil_de_usuario' id=usuario.id %}" type="button" class="btn btn-danger" >Cancelar</a>
+                                    <button type="submit" class="btn btn-primary" name="editar_perfil">Actualizar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal cambiar contraseña -->
+                <div class="modal fade" id="modalEditarContraseña" tabindex="-1" role="dialog" aria-labelledby="modalEditarContraseñaLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header card-header">
+                                <h5 class="modal-title" id="modalEditarContraseñaLabel">Cambiar contraseña</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="password">Contraseña actual: </label>
+                                        <input type="password" name="password1" required id="password1" class="form-control"
+                                        placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Contraseña nueva: </label>
+                                        <input type="password" name="password2" required id="password2" class="form-control"
+                                        placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Confirmar contraseña nueva: </label>
+                                        <input type="password" name="password3" required id="password3" class="form-control"
+                                        placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                        <b style="font-size: 20px; text-align: center;">NOTA:</b>
+                                        <ul style="font-size: 15px; text-align: justify;">
+                                            <li>La contraseña debe tener al menos 8 caracteres.</li>
+                                            <li>La contraseña debe contener al menos un número.</li>
+                                            <li>La contraseña debe contener al menos una letra mayúscula y una minúscula.</li>
+                                            <li>La contraseña debe contener al menos uno de los siguientes caracteres especiales: $ # @.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="{% url 'perfil_de_usuario' id=usuario.id %}" type="button" class="btn btn-danger">Cancelar</a>
+                                    <button type="submit" class="btn btn-primary" name="cambiar_contraseña">Actualizar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mt-3">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalEditarPerfil">Editar perfil</button>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalEditarContraseña">Cambiar contraseña</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

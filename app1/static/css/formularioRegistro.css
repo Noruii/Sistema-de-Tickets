@@ -1,0 +1,206 @@
+@import url('https://fonts.googleapis.com/css2?family=Labrada:wght@100;200;400;600&family=Roboto:ital,wght@1,400;1,500&display=swap');
+:root {
+    --colorPrimario: #48e;
+    --colorSecundario: #c85935;
+    --colorTercero: #e7eaf0;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--colorTercero);
+    overflow-x: hidden;
+}
+
+.container_formulario {
+    width: 80%;
+    height: max-content;
+    margin: 0 auto;
+    margin-top: 5%;
+    border-radius: 20px;
+    /*box-shadow: 0px -1px 15px 5px var(--colorPrimario);*/
+    box-shadow: 0px 0px 5px 8px ghostwhite;
+}
+
+.formulario_de_registro {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: repeat(1, 1fr);
+    grid-template-columns: 1fr 2fr;
+    border-radius: 50px;
+}
+
+.formularioInfo {
+    width: 100%;
+    height: 100%;
+    background-color: var(--colorPrimario);
+    color: white;
+    font-size: 20px;
+    padding: 30px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 20px 0px 0px 20px;
+}
+
+.formularioInfo h1 {
+    font-size: 40px;
+    margin-bottom: 20px;
+    margin-top: 20%;
+}
+
+.formularioInfo p {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.container_formulario_inf {
+    display: flex;
+    flex-direction: column;
+    padding: 25px 15px;
+    background-color: var(--colorTercero);
+    justify-content: center;
+    align-items: center;
+    border-radius: 0px 20px 20px 0px;
+}
+
+#form_bienvenida {
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: var(--colorPrimario);
+}
+
+.container_formulario_inf input[type="text"],
+.container_formulario_inf input[type="email"],
+.container_formulario_inf input[type="password"] {
+    width: 60%;
+    height: 40px;
+    font-size: 20px;
+    padding: 15px;
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0px -1px 5px 1px var(--colorPrimario);
+    color: var(--colorPrimario);
+    font-weight: 600;
+}
+
+.inputError {
+    box-shadow: 0px -1px 5px 1px var(--colorSecundario);
+}
+
+.container_genero {
+    display: flex;
+    width: max-content;
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.container_genero label {
+    font-size: 20px;
+    text-align: center;
+    line-height: 25px;
+    color: var(--colorPrimario);
+}
+
+.container_formulario_inf input[type="radio"] {
+    width: 30px;
+    height: 15px;
+    margin-left: 2px;
+    margin-right: 10px;
+}
+
+.btn_crearCuenta {
+    width: max-content;
+    height: max-content;
+    padding: 8px 15px;
+    font-size: 20px;
+    background-color: var(--colorPrimario);
+    color: white;
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    cursor: pointer;
+    transition: 1s all forwards;
+}
+
+.btn_crearCuenta:hover {
+    background-color: transparent;
+    color: var(--colorPrimario);
+    outline: 2px solid var(--colorPrimario);
+    transform: scale(1.1);
+}
+
+.nota {
+    font-size: 20px;
+    color: var(--colorPrimario);
+}
+
+#span {
+    text-decoration: none;
+    color: var(--colorSecundario);
+    cursor: pointer;
+}
+
+@media screen and (max-width:1024px) {
+    .container_formulario {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .container_formulario {
+        width: 90%;
+        height: max-content;
+    }
+    .formulario_de_registro {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(2, max-content, 3fr);
+    }
+    .formularioInfo {
+        height: 100%;
+        border-radius: 20px 20px 0px 0px;
+    }
+    .container_formulario_inf {
+        border-radius: 0px 0px 20px 20px;
+    }
+    .formularioInfo h1 {
+        margin-top: 0%;
+        font-size: 30px;
+    }
+    .container_formulario_inf input[type="text"],
+    .container_formulario_inf input[type="email"],
+    .container_formulario_inf input[type="password"] {
+        width: 80%;
+    }
+    .btn_crearCuenta {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .container_formulario {
+        width: 95%;
+        height: 95vh;
+    }
+    .formularioInfo h1 {
+        margin-top: 0%;
+        font-size: 25px;
+    }
+    .formularioInfo p {
+        font-size: 15px;
+        margin-top: -15px;
+    }
+}

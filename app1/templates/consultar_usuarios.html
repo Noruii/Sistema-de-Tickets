@@ -1,0 +1,104 @@
+{% extends 'layouts/base.html' %} 
+
+{% load static %} 
+
+{% block title %}Consultar Usuarios{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" href="{% static '/css/lista_consultar_usuarios.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="{% static '/js/eliminar_usuario.js' %}"></script>
+    <script src="{% static '/js/lista_consultar_usuarios.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<main class="">
+    <section class="card card-body" style="background-color: #e7eaf0;">
+        <div class=" mt-5" >
+            <div class="row" >
+                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" >
+                    <h1 class="text-center mt-2"><i class="fas fa-users" style="color: #48e;"></i> Gestion de Usuarios</h1>
+                    <div class="table table-responsive card card-body">
+                        <table id="datatable-usuarios" class="table table-striped table-hover table-bordered">
+                            <caption>
+                                Listado de Usuarios                                
+                            </caption>
+                            <thead style="color: white; background-color:#48e;">
+                                <div>
+                                    <a href="{% url 'crear_usuario' %}" class='btn btn-sm btn-success' style="margin-left: 7px;" ><i class="fas fa-solid fa-user-plus"></i> Crear Usuario
+                                    </a>
+                                </div>
+                                <div style="margin-top: 11px; margin-bottom: -11px;">
+                                    <p class='text-success'>
+                                        <b>Numero de Usuarios:</b>
+                                        <i class="fas fa-solid fa-user" style="margin-left: -11px;"></i>
+                                        <b style="margin-left: -11px;">{{ numero_maximo_usuarios }}</b>
+                                    </p>
+                                </div>
+                                <tr>
+                                    <!-- <th class="centered">#</th> -->
+                                    <th class="centered">ID Usuario</th>
+                                    <th class="centered">Administrador</th>
+                                    <th class="centered">Super Administrador</th>
+                                    <th class="centered">Nombre de usuario</th>
+                                    <th class="centered">Correo</th>                        
+                                    <th class="centered">Activo</th>
+                                    <th class="centered">Nombre</th>
+                                    <th class="centered">Apellido</th>
+                                    <th class="centered">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody_consultar_usuarios">
+                                {% for usuario in todos_los_usuarios %}
+                                    <tr>
+                                        <!-- <th scope="row" class="centered">{{ forloop.counter }}</th> -->
+                                        <th class="centered">{{ usuario.id }}</th>
+
+                                        {% if usuario.is_staff %}
+                                            <td class="centered text-success"><i class="fas fa-solid fa-check"></i> {{ usuario.is_staff }}</td>
+                                        {% else %}
+                                            <td class="centered text-danger"><i class="fas fa-times"></i> {{ usuario.is_staff }}</td>
+                                        {% endif %}
+
+                                        {% if usuario.is_superuser %}
+                                            <td class="centered text-success"><i class="fas fa-solid fa-check"></i> {{ usuario.is_superuser }}</td>
+                                        {% else %}
+                                            <td class="centered text-danger"><i class="fas fa-times"></i> {{ usuario.is_superuser }}</td>
+                                        {% endif %}
+
+                                        <td class="centered">{{ usuario.username}}</td>
+                                        <td class="centered">{{ usuario.email }}</td>
+
+                                        {% if usuario.is_active %}
+                                            <td class="centered text-success"><i class="fas fa-solid fa-circle" style="font-size: 10px;"></i> {{ usuario.is_active }}</td>
+                                        {% else %}
+                                            <td class="centered text-danger"><i class="fas fa-solid fa-circle" style="font-size: 10px;"></i> {{ usuario.is_active }}</td>
+                                        {% endif %}
+
+                                        <td class="centered">{{ usuario.first_name }}</td>
+                                        <td class="centered">{{ usuario.last_name }}</td>
+                                        <td class="centered">
+                                            <a href="{% url 'editar_usuario' id=usuario.id %}" class="btn btn-sm btn-info"><i class='fa fa-solid fa-pencil'></i></a>                                         
+                                            <a href="#" onclick="eliminar_usuario({{ usuario.id }})" class='btn btn-sm btn-danger'><i class='fa fa-solid fa-trash'></i></a>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <h3 class="text-center" style="color:#48e;">
+                                        <i class="fas fa-users" style="color:#48e"></i> Aún no se han creado usuarios.
+                                    </h3>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock %}

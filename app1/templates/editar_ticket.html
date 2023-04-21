@@ -1,0 +1,65 @@
+{% extends 'layouts/base.html' %} 
+
+{% load static %} 
+
+{% block title %} Editar Ticket {% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+
+<main class="" style="background-color: #e7eaf0;">
+    <div class="row">
+        <div class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4 mt-5 mb-3">
+            <h1 class="text-center mt-4"><i class="fa fa-solid fa-pencil" style="margin-right: 7px; color:#48e"></i>Editar Ticket</h1>
+            <form action="{% url 'editar_ticket' id=ticket.id %}" method="POST" class="card card-body">
+                {% csrf_token %}
+
+                <!-- Mensajes -->
+                {% if messages %}
+                    {% for msg in messages %}
+                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                            <strong>{{ msg }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="form-group">
+                    <label>Asunto:</label>
+                    <input type="text" name="txtAsunto" id="id_txtAsunto" value="{{ ticket.asunto }}" class="form-control" placeholder="Describir el asunto">
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Departamento:</label>
+                    <select class="form-control" name="formControlDepartamento" id="formControlDepartamento">
+                        <!-- 
+                            Aquí, se está comprobando si el valor de j coincide con el departamento asignado al ticket (ticket.departamento). 
+                            Si coinciden, se agrega el atributo selected a la opción correspondiente. 
+                            De lo contrario, se renderiza la opción normal sin el atributo selected.
+                        -->
+                        {% for i, j in departamentos %}
+                            {% if j == ticket.departamento %}
+                                <option value="{{ j }}" selected>{{ j }}</option>
+                            {% else %}
+                                <option value="{{ j }}">{{ j }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>                
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Detalles de la problematica:</label>
+                    <textarea class="form-control" name="formControlDescripcion" id="id_formControlTextarea1" rows="4">{{ ticket.descripcion }}</textarea>
+                </div>
+                <div class="form-group mt-3 d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                    <a class="btn btn-danger" href="{% url 'consultar_ticket' %}" role="button">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock %}
