@@ -44,10 +44,10 @@
         <!-- <input type="email" name="user_email" required="true" id="inpCorreo" placeholder="E-mail"> -->
         <input type="password" name="user_clave1" id="inpClave" placeholder="Contraseña">
 
-        <!-- <a href="{% url 'cambio_clave' %}" id="btn_crear_cuenta" class="mt-3">¿Olvido su contraseña?</a> -->
-
         <input type="submit" id="btn_acceder" value="Iniciar Sesión" class="mt-4">
         <a href="{% url 'registro' %}" id="btn_crear_cuenta" id="span">Registrase</a>
+
+        <a href="{% url 'password_reset' %}" id="btn_crear_cuenta" class="mt-3">¿Olvido su contraseña?</a>
     </form>
 
     <!-- Bootstrap -->

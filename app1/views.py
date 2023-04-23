@@ -563,7 +563,8 @@ def iniciar_sesion(request):
             username=request.POST['user_nombre'],
             password=request.POST['user_clave1']
         )
-        # Comprobando si el usuario es normal o admin
+        # Comprobando si el usuario es normal o admin 
+        # TODO: arreglar...
         if user is None:
             messages.error(request, 'El usuario o la contraseña son incorrectos.')
             return redirect('iniciar_sesion') 
