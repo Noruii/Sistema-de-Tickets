@@ -1,4 +1,4 @@
-// Ejemplo de JavaScript inicial para deshabilitar el envío de formularios si hay campos no válidos
+// Ejemplo de JavaScript iniciar para deshabilitar el envío de formularios si hay campos no válidos
 (function () {
     "use strict";
 

@@ -46,7 +46,7 @@ def registro_view(request):
             messages.error(request, 'Ingrese un correo electrónico válido.')
             return redirect('registro')
 
-        # validar que la contraseña
+        # validar la contraseña
         if len(password) < 8:
             messages.error(request, 'La contraseña debe tener al menos 8 caracteres.')
             return redirect('registro')
@@ -150,7 +150,6 @@ def crear_usuario_view(request):
             if request.user.check_password(request.POST['passwordModal']):
                 if request.POST['password1'] == request.POST['password2']:
                     try:
-
                         rol_de_usuario = request.POST.get('flexRadioRol')
 
                         # Crear el nuevo usuario
